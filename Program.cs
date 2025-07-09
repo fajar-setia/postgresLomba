@@ -47,6 +47,7 @@ namespace WebsiteLomba
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapGet("/", () => "API is running ??");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
