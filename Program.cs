@@ -10,49 +10,47 @@ namespace WebsiteLomba
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
-            _ = builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddHttpClient("LombaApi", client =>
             {
                 client.BaseAddress = new Uri(builder.Configuration["LombaApiBaseUrl"]);
+            });
+
+            builder.Services.AddHttpClient("PesertaApi", client =>
+            {
                 client.BaseAddress = new Uri(builder.Configuration["PesertaApiBaseUrl"]);
             });
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
-            
-            // Configure the HTTP request pipeline.
+
+            // Swagger aktif di semua environment
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             if (!app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-            else
-            {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapControllers();
             app.MapGet("/", () => "API is running 🚀");
+            app.MapGet("/ping", () => "pong");
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            
+                pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
 
             app.Run();
         }
