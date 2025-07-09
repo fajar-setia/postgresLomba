@@ -1,0 +1,49 @@
+﻿@model WebsiteLomba.ViewModels.PesertaCreateViewModel
+
+@{
+    ViewData["Title"] = "Tambah Peserta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tambah Peserta</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="peserta.NamaPeserta" class="form-label"></label>
+        <input asp-for="peserta.NamaPeserta" class="form-control" />
+        <span asp-validation-for="peserta.NamaPeserta" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="peserta.Email" class="form-label"></label>
+        <input asp-for="peserta.Email" class="form-control" />
+        <span asp-validation-for="peserta.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="peserta.NomorTelepon" class="form-label"></label>
+        <input asp-for="peserta.NomorTelepon" class="form-control" />
+        <span asp-validation-for="peserta.NomorTelepon" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="peserta.TanggalDaftar" class="form-label"></label>
+        <input asp-for="peserta.TanggalDaftar" type="date" class="form-control" />
+        <span asp-validation-for="peserta.TanggalDaftar" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="peserta.LombaId" class="form-label">Lomba</label>
+        <select asp-for="peserta.LombaId" class="form-select" asp-items="@(new SelectList(Model.Lombas, "Id", "NamaLomba"))">
+            <option value="">-- Pilih Lomba --</option>
+        </select>
+        <span asp-validation-for="peserta.LombaId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Simpan</button>
+    <a asp-action="Index" class="btn btn-secondary">Kembali</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

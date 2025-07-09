@@ -1,0 +1,207 @@
+﻿@functions {
+    public bool IsActive(string controller, string action)
+    {
+        return ViewContext.RouteData.Values["controller"]?.ToString() == controller &&
+               ViewContext.RouteData.Values["action"]?.ToString() == action;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebsiteLomba Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebsiteLomba.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar col-md-3 col-lg-2 d-md-block sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-trophy"></i>
+                Admin Panel
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("Admin", "Dashboard") ? "active" : "")" asp-controller="Admin" asp-action="Dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="competitions">
+                        <i class="fas fa-trophy"></i>
+                        Kelola Lomba
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("Peserta", "Index") ? "active" : "")" asp-controller="Peserta" asp-action="Index">
+                        <i class="fas fa-users"></i>
+                        Peserta
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("Admin", "Index") ? "active" : "")" asp-controller="Admin" asp-action="Index">
+                        <i class="fas fa-tags"></i>
+                        Kategori
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="submissions">
+                        <i class="fas fa-file-upload"></i>
+                        Submission
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="judges">
+                        <i class="fas fa-gavel"></i>
+                        Juri
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="results">
+                        <i class="fas fa-medal"></i>
+                        Hasil Lomba
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="announcements">
+                        <i class="fas fa-bullhorn"></i>
+                        Pengumuman
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        Laporan
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        Pengaturan
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-auto p-3" style="border-top: 1px solid #495057; margin-top: auto;">
+                <a class="nav-link text-danger" href="#" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </nav>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Top Navigation -->
+            <header>
+                <nav class="navbar navbar-expand-lg navbar-admin">
+                    <div class="container-fluid">
+                        <button class="btn btn-link sidebar-toggle d-md-none" type="button">
+                            <i class="fas fa-bars"></i>
+                        </button>
+
+                        <span class="navbar-brand mb-0 h1">Website Lomba - Admin</span>
+
+                        <div class="navbar-nav ms-auto">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle"></i>
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- Main Content -->
+            <main class="admin-content flex-grow-1">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay untuk Mobile -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Font Awesome untuk Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // Sidebar Toggle untuk Mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                });
+            }
+
+            // Active Navigation
+            const navLinks = document.querySelectorAll('.admin-sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+
+                    // Remove active class from all links
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+
+                    // Add active class to clicked link
+                    this.classList.add('active');
+
+                    // Close sidebar on mobile after selection
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('show');
+                        overlay.classList.remove('show');
+                    }
+                });
+            });
+        });
+
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                // Redirect to logout action
+                window.location.href = '@Url.Action("Logout", "Account")';
+            }
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="container py-4">
+    <h2 class="mb-4">Selamat datang di Dashboard</h2>
+
+    <!-- Kartu Statistik -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Peserta</h5>
+                    <p class="card-text display-6">@ViewData["TotalPeserta"]</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Total Lomba</h5>
+                    <p class="card-text display-6">@ViewData["TotalLomba"]</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-white bg-warning shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Pesanan</h5>
+                    <p class="card-text display-6">320</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card text-white bg-danger shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Pengembalian</h5>
+                    <p class="card-text display-6">5</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafik (placeholder) -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <strong>Statistik Mingguan</strong>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Aktivitas -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    Aktivitas Terbaru
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">👤 Admin login pukul 08:00</li>
+                    <li class="list-group-item">🛒 Pesanan baru oleh Pelanggan X</li>
+                    <li class="list-group-item">📦 Paket dikirim ke Surabaya</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Placeholder Tabel / Info Lain -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    Notifikasi Sistem
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">✅ Backup terakhir: Hari ini, 02:00</li>
+                    <li class="list-group-item">⚠️ Stok produk Z menipis</li>
+                    <li class="list-group-item">🔒 Update keamanan tersedia</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WebsiteLomba.Models.Lomba>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Admin Dashboard</h2>
+<p>Welcome to the Admin Dashboard. Here you can manage all aspects of the website.</p>
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Create New Lomba</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nama Lomba</th>
+                <th>Deskripsi</th>
+                <th>Lokasi</th>
+                <th>Kontak</th>
+                <th>Tanggal Mulai</th>
+                <th>Tanggal Selesai</th>
+                <th>Gambar</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lomba in Model)
+            {
+                <tr>
+                    <td>@lomba.NamaLomba</td>
+                    <td>@lomba.Deskripsi</td>
+                    <td>@lomba.Lokasi</td>
+                    <td>@lomba.Kontak</td>
+                    <td>@lomba.TanggalMulai.ToShortDateString()</td>
+                    <td>@lomba.TanggalSelesai.ToShortDateString()</td>
+                    <td>
+                        <img src="@lomba.GambarPath" alt="Alternate Text" width="100" />
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@lomba.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@lomba.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

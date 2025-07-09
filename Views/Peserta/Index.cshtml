@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Peserta Dashboard";
+}
+
+<h1>Halaman Daftar Peserta</h1>
+
+<p>Selamat datang di halaman daftar peserta lomba. Di sini Anda dapat melihat semua peserta yang telah mendaftar untuk lomba yang tersedia.</p>
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Tambah Peserta Baru</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nama Peserta</th>
+                <th>Email</th>
+                <th>Telepon</th>
+                <th>Lomba</th>
+                <th>Tanggal Pendaftaran</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var peserta in Model)
+            {
+                <tr>
+                    <td>@peserta.NamaPeserta</td>
+                    <td>@peserta.Email</td>
+                    <td>@peserta.NomorTelepon</td>
+                    <td>@(peserta.Lomba != null ? peserta.Lomba.NamaLomba : "Tidak ada lomba")</td>
+                    <td>@peserta.TanggalDaftar.ToShortDateString()</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@peserta.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@peserta.Id" class="btn btn-danger btn-sm">Hapus</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

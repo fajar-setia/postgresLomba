@@ -1,0 +1,62 @@
+﻿@model WebsiteLomba.Models.Lomba
+@{
+    ViewData["Title"] = "Create Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+<h2>Create Admin</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="NamaLomba" class="form-label"></label>
+        <input asp-for="NamaLomba" class="form-control" />
+        <span asp-validation-for="NamaLomba" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Deskripsi" class="form-label"></label>
+        <textarea asp-for="Deskripsi" class="form-control"></textarea>
+        <span asp-validation-for="Deskripsi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Lokasi" class="form-label"></label>
+        <textarea asp-for="Lokasi" class="form-control"></textarea>
+        <span asp-validation-for="Lokasi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Kontak" class="form-label"></label>
+        <textarea asp-for="Kontak" class="form-control"></textarea>
+        <span asp-validation-for="Kontak" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="LinkPendaftaran" class="form-label"></label>
+        <input asp-for="LinkPendaftaran" class="form-control"></<input/>
+        <span asp-validation-for="LinkPendaftaran" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TanggalMulai" class="form-label"></label>
+        <input asp-for="TanggalMulai" type="date" class="form-control" />
+        <span asp-validation-for="TanggalMulai" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="TanggalSelesai" class="form-label"></label>
+        <input asp-for="TanggalSelesai" type="date" class="form-control" />
+        <span asp-validation-for="TanggalSelesai" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Upload Gambar</label>
+        <input type="file" name="gambar" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Simpan</button>
+    <a asp-action="Index" class="btn btn-secondary">Kembali</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
