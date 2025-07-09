@@ -9,22 +9,23 @@ namespace WebsiteLomba.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly string LombaApiBaseUrl = "http://localhost:5196/api/LombaApi";
+        private readonly string _lombaApiUrl;
 
-        public AdminController(IHttpClientFactory httpClientFactory, IWebHostEnvironment webHostEnvironment)
+        public AdminController(IHttpClientFactory httpClientFactory, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _lombaApiUrl = configuration["LombaApiBaseUrl"];
             _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
         {
-            var lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>(LombaApiBaseUrl);
+            var lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>($"{_lombaApiUrl}");
             return View(lombas);
         }
         public async Task<IActionResult> Dashboard()
         {
-            var lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>(LombaApiBaseUrl);
+            var lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>($"{_lombaApiUrl}");
             int totalLomba = lombas.Count;
             
 
@@ -33,7 +34,7 @@ namespace WebsiteLomba.Controllers
         }
         public async Task<IActionResult> Detail(int id)
         {
-            var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{LombaApiBaseUrl}/{id}");
+            var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{$"{_lombaApiUrl}"}/{id}");
             if (lomba == null)
             {
                 return NotFound();
@@ -62,7 +63,7 @@ namespace WebsiteLomba.Controllers
                     lomba.GambarPath = "/uploads/" + fileName;
                 }
 
-                var response = await _httpClient.PostAsJsonAsync(LombaApiBaseUrl, lomba);
+                var response = await _httpClient.PostAsJsonAsync($"{_lombaApiUrl}", lomba);
                 if (response.IsSuccessStatusCode)
                     return RedirectToAction(nameof(Index));
             }
@@ -71,7 +72,7 @@ namespace WebsiteLomba.Controllers
         }
         public async Task<IActionResult> Edit(int id)
         {
-            var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{LombaApiBaseUrl}/{id}");
+            var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{$"{_lombaApiUrl}"}/{id}");
             if (lomba == null)
             {
                 return NotFound();
@@ -98,7 +99,7 @@ namespace WebsiteLomba.Controllers
                     await gambar.CopyToAsync(stream);
                     lomba.GambarPath = "/uploads/" + fileName;
                 }
-                var response = await _httpClient.PutAsJsonAsync($"{LombaApiBaseUrl}/{id}", lomba);
+                var response = await _httpClient.PutAsJsonAsync($"{$"{_lombaApiUrl}"}/{id}", lomba);
                 if (response.IsSuccessStatusCode)
                     return RedirectToAction(nameof(Index));
             }
@@ -106,7 +107,7 @@ namespace WebsiteLomba.Controllers
         }
         public async Task<IActionResult> Delete(int id)
         {
-           var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{LombaApiBaseUrl}/{id}");
+           var lomba = await _httpClient.GetFromJsonAsync<Lomba>($"{$"{_lombaApiUrl}"}/{id}");
             if (lomba == null)
             {
                 return NotFound();
@@ -117,7 +118,7 @@ namespace WebsiteLomba.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var response = await _httpClient.DeleteAsync($"{LombaApiBaseUrl}/{id}");
+            var response = await _httpClient.DeleteAsync($"{$"{_lombaApiUrl}"}/{id}");
             if (!response.IsSuccessStatusCode)
             {
                 ModelState.AddModelError(string.Empty, "Failed to delete the record.");

@@ -10,15 +10,19 @@ namespace WebsiteLomba.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly string PesertaApiBaseUrl = "http://localhost:5196/api/PesertaApi";
-        public PesertaController(IHttpClientFactory httpClientFactory, IWebHostEnvironment webHostEnvironment)
+        private readonly string _pesertaApiUrl;
+
+        public object PesertaApiBaseUrl { get; private set; }
+
+        public PesertaController(IHttpClientFactory httpClientFactory, IConfiguration configuration ,IWebHostEnvironment webHostEnvironment)
         {
             _httpClient = httpClientFactory.CreateClient();
             _webHostEnvironment = webHostEnvironment;
+            _pesertaApiUrl = configuration["PesertaApiBaseUrl"];
         }
         public async Task<IActionResult> Index()
         {
-            var pesertaList = await _httpClient.GetFromJsonAsync<List<Peserta>>(PesertaApiBaseUrl);
+            var pesertaList = await _httpClient.GetFromJsonAsync<List<Peserta>>($"{_pesertaApiUrl}");
             return View(pesertaList);
         }
         public async Task<IActionResult> Detail(int id)
@@ -32,7 +36,7 @@ namespace WebsiteLomba.Controllers
         }
         public async Task<IActionResult> Create()
         {
-            var lombaList = await _httpClient.GetFromJsonAsync<List<Lomba>>("http://localhost:5196/api/LombaApi");
+            var lombaList = await _httpClient.GetFromJsonAsync<List<Lomba>>($"{_pesertaApiUrl}");
             var viewModel = new PesertaCreateViewModel
             {
                 peserta = new Peserta(),
@@ -49,7 +53,7 @@ namespace WebsiteLomba.Controllers
             {
                 model.peserta.TanggalDaftar = DateTime.SpecifyKind(model.peserta.TanggalDaftar, DateTimeKind.Utc);
 
-                var response = await _httpClient.PostAsJsonAsync(PesertaApiBaseUrl, model.peserta);
+                var response = await _httpClient.PostAsJsonAsync($"{_pesertaApiUrl}", model.peserta);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
@@ -58,7 +62,7 @@ namespace WebsiteLomba.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Gagal menambahkan peserta. Silakan coba lagi.");
                 }
-                model.Lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>("http://localhost:5196/api/LombaApi");
+                model.Lombas = await _httpClient.GetFromJsonAsync<List<Lomba>>($"{_pesertaApiUrl}");
 
             }
             return View(model);
@@ -66,7 +70,7 @@ namespace WebsiteLomba.Controllers
 
         public async Task<IActionResult> Dashboard()
         {
-            var pesertaList = await _httpClient.GetFromJsonAsync<List<Peserta>>(PesertaApiBaseUrl);
+            var pesertaList = await _httpClient.GetFromJsonAsync<List<Peserta>>($"{_pesertaApiUrl}");
             int totalPeserta = pesertaList.Count;
             
             ViewData["TotalPeserta"] = totalPeserta;
