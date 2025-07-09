@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebsiteLomba.Models;
 
@@ -15,7 +15,7 @@ namespace WebsiteLomba.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Content("Welcome to the Railway-hosted Website 🚀");
         }
 
         public IActionResult Privacy()

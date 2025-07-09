@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using WebsiteLomba.Data;
 
@@ -47,10 +47,10 @@ namespace WebsiteLomba
             app.UseAuthorization();
 
             app.MapControllers();
-            app.MapGet("/", () => "API is running ??");
+            app.MapGet("/", () => "API is running 🚀");
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             
 
